@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "prompt-battle"
+version = "0.1.0"
+description = ""
+authors = ["EcrevisseTMP <romeo.poubelle@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+streamlit = "^1.34.0"
+openai = "^1.29.0"
+python-dotenv = "^1.0.1"
+pillow = "^10.3.0"
+firebase-admin = "^6.5.0"
+streamlit-carousel = "^1.0.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
