@@ -34,6 +34,8 @@ if "selected_session" not in st.session_state:
 if st.button("Changer de pseudo"):
     pseudo_dialog()
 
+st.page_link("pages/01_Prompt.py", label="Continuer vers la page de Prompt")
+
 if st.session_state["pseudo"] == "lavaleexx":
     names = [""] + db.get_all_session_names()
     selected_session = st.selectbox(
