@@ -19,7 +19,7 @@ if st.sidebar.button("Recharger"):
 session_name = db.get_selected_session()
 if session_name != "":
     items = db.get_all_images_for_session(session_name)
-    items = items + items + items
+    # items = items + items + items
 
     if st.sidebar.toggle("Carousel"):
         col_ref, col_car = st.columns([2, 5])
