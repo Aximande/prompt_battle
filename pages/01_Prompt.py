@@ -51,4 +51,4 @@ if st.session_state["selected_session_db"] != "":
     if "img_url" in st.session_state and st.session_state["img_url"] is not None:
         st.header(f"Votre image : {st.session_state['pseudo']}")
         if st.session_state["img_url"] != "":
-            st.image(st.session_state["img_url"], width=703)
+            st.image(st.session_state["img_url"])
