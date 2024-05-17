@@ -3,6 +3,12 @@ from PIL import Image
 import db_manager as db
 
 
+@st.experimental_dialog("pseudo")
+def pseudo_dialog():
+    st.session_state["pseudo"] = st.text_input("Quelle est votre pseudo ??")
+    st.rerun()
+
+
 st.set_page_config(page_title="Accueil")
 
 # st.image(
@@ -15,19 +21,18 @@ db.initialize_firebase()
 st.title("Accueil")
 st.write("Bienvenue sur notre application de démonstration !")
 
-if "pseudo" not in st.session_state:
-    st.session_state["pseudo"] = ""
+if "pseudo" not in st.session_state or st.session_state["pseudo"] == "":
+    pseudo_dialog()
 
 if "selected_session" not in st.session_state:
     st.session_state["selected_session"] = ""
 
-st.session_state["pseudo"] = st.text_input(
-    "Quelle est votre pseudo ??", value=st.session_state["pseudo"]
-)
 
 # faire une page avec des tips et des aides
 # gallerie avec toutes les miniatures + autres page avec carousel des images
 # des rounds pour chaque generations
+if st.button("Changer de pseudo"):
+    pseudo_dialog()
 
 if st.session_state["pseudo"] == "lavaleexx":
     names = [""] + db.get_all_session_names()
