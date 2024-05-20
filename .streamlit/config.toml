@@ -1,0 +1,15 @@
+[client]
+showErrorDetails = false
+
+[theme]
+base = "dark"
+primaryColor = "#1D1D1B"
+backgroundColor = "#E9E8E4"
+secondaryBackgroundColor = "#9D9D9C"
+textColor = "#B00005"
+
+# Rouge : #B00005
+# Rouge clair : #DF999B
+# Noir : #1D1D1B
+# Gris : #9D9D9C
+# Gris clair : #E9E8E4

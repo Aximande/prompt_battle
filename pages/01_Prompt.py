@@ -14,6 +14,11 @@ st.set_page_config(page_title="Prompt")
 
 db.initialize_firebase()
 
+st.sidebar.image(
+    Image.open("static/ekko.png"),
+    width=80,
+)
+
 if "pseudo" not in st.session_state or st.session_state["pseudo"] == "":
     pseudo_dialog()
 
