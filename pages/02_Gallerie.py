@@ -57,3 +57,7 @@ if st.session_state["pseudo"] == "lavaleexx":
 
         db.select_session(selected_session)
         st.rerun()
+
+    if st.sidebar.button("Redemarrer la session"):
+        db.clear_session(session_name)
+        st.rerun()

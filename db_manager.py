@@ -76,6 +76,28 @@ def get_img_ref_url(session_name):
     )
 
 
+def _delete_collection(coll_ref, batch_size):
+    if batch_size == 0:
+        return
+
+    docs = coll_ref.list_documents(page_size=batch_size)
+    deleted = 0
+
+    for doc in docs:
+        print(f"Deleting doc {doc.id} => {doc.get().to_dict()}")
+        doc.delete()
+        deleted = deleted + 1
+
+    if deleted >= batch_size:
+        return _delete_collection(coll_ref, batch_size)
+
+
+def clear_session(session_name):
+    db = firestore.client()
+    col = db.collection("sessions").document(session_name).collection("images")
+    _delete_collection(col, 15)
+
+
 # def get_selection_watch():
 #     # Create an Event for notifying main thread.
 #     db = firestore.client()
