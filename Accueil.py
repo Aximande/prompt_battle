@@ -41,7 +41,7 @@ if "selected_session" not in st.session_state:
 
 
 # faire une page avec des tips et des aides
-# gallerie avec toutes les miniatures + autres page avec carousel des images
+# galerie avec toutes les miniatures + autres page avec carousel des images
 # des rounds pour chaque generations
 if st.button("Changer de pseudo"):
     pseudo_dialog()

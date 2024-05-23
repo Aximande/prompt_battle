@@ -5,7 +5,7 @@ import db_manager as db
 import math
 from Accueil import pseudo_dialog
 
-st.set_page_config(page_title="Gallerie", layout="wide")
+st.set_page_config(page_title="Galerie", layout="wide")
 
 db.initialize_firebase()
 
@@ -27,7 +27,7 @@ if session_name != "":
     items = db.get_all_images_for_session(session_name)
     # items = items + items + items
 
-    if st.sidebar.toggle("Carousel"):
+    if st.sidebar.toggle("Carrousel"):
         col_ref, col_car = st.columns([2, 5])
         with col_ref:
             url = db.get_img_ref_url(session_name)
