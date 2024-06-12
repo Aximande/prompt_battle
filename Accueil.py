@@ -22,11 +22,11 @@ db.initialize_firebase()
 #     )
 # with col_logo_1:
 st.sidebar.image(
-    Image.open("static/ekko.png"),
+    Image.open("static/cerclevoyage.png"),
     width=80,
 )
 st.image(
-    Image.open("static/logo.png"),
+    Image.open("static/cerclevoyagebandeau.png"),
     width=450,
 )
 

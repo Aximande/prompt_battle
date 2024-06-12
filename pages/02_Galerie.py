@@ -10,7 +10,7 @@ st.set_page_config(page_title="Galerie", layout="wide")
 db.initialize_firebase()
 
 st.sidebar.image(
-    Image.open("static/ekko.png"),
+    Image.open("static/cerclevoyage.png"),
     width=80,
 )
 
