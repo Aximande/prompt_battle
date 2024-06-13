@@ -14,17 +14,17 @@ st.set_page_config(page_title="Accueil")
 db.initialize_firebase()
 
 
- col_logo_0, col_logo_1 = st.columns(2)
- with col_logo_0:
-     st.image(
-         Image.open("static/cen-rond.png"),
-         width=300,
-     )
- with col_logo_1:
-st.sidebar.image(
-    Image.open("static/cen-rond.png"),
-    width=80,
-)
+# col_logo_0, col_logo_1 = st.columns(2)
+# with col_logo_0:
+#     st.image(
+#         Image.open("static/ekko.png"),
+#         width=300,
+#     )
+# with col_logo_1:
+#st.sidebar.image(
+#    Image.open("static/cerclevoyage.png"),
+#    width=80,
+#)
 st.image(
     Image.open("static/cen-bandeau.png"),
     width=450,
