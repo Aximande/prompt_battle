@@ -21,14 +21,14 @@ db.initialize_firebase()
 #         width=300,
 #     )
 # with col_logo_1:
-st.sidebar.image(
-    Image.open("static/cerclevoyage.png"),
-    width=80,
-)
-st.image(
-    Image.open("static/cerclevoyagebandeau.png"),
-    width=450,
-)
+#st.sidebar.image(
+#    Image.open("static/cerclevoyage.png"),
+#    width=80,
+#)
+#st.image(
+#    Image.open("static/cerclevoyagebandeau.png"),
+#    width=450,
+#)
 
 st.title("Accueil")
 st.write("Bienvenue sur notre application de démonstration !")
