@@ -9,10 +9,10 @@ st.set_page_config(page_title="Galerie", layout="wide")
 
 db.initialize_firebase()
 
-#st.sidebar.image(
-#    Image.open("static/cerclevoyage.png"),
-#    width=80,
-#)
+st.sidebar.image(
+    Image.open("static/cen-rond.png"),
+    width=80,
+)
 
 if "pseudo" not in st.session_state or st.session_state["pseudo"] == "":
     pseudo_dialog()
