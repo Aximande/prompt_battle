@@ -26,7 +26,7 @@ db.initialize_firebase()
 #    width=80,
 #)
 st.image(
-    Image.open("static/cen-bandeau.png"),
+    Image.open("static/brut-ia-logo.png"),
     width=450,
 )
 
