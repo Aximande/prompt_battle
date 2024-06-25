@@ -15,7 +15,7 @@ st.set_page_config(page_title="Prompt")
 db.initialize_firebase()
 
 st.sidebar.image(
-    Image.open("static/brut-ia-logo.png"),
+    Image.open("static/cen-rond.png"),
     width=80,
 )
 
