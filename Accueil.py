@@ -1,4 +1,8 @@
 import streamlit as st
+
+# Cette ligne doit être la première commande Streamlit
+st.set_page_config(page_title="ESCP AI Champions - Battle of Prompt", layout="wide")
+
 from PIL import Image
 import db_manager as db
 import os
@@ -16,8 +20,6 @@ def pseudo_dialog():
                 st.session_state["pseudo_submitted"] = True
                 st.rerun()
 
-
-st.set_page_config(page_title="ESCP AI Champions - Battle of Prompt", layout="wide")
 
 db.initialize_firebase()
 

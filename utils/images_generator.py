@@ -7,7 +7,7 @@ import urllib.request
 import json
 
 # Initialize OpenAI client with API key from Streamlit secrets or environment variable
-DEBUG = True
+DEBUG = False  # Désactivé par défaut
 
 def get_openai_client():
     if DEBUG:

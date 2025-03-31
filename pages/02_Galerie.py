@@ -1,11 +1,13 @@
 import streamlit as st
+
+# Cette ligne doit être la première commande Streamlit
+st.set_page_config(page_title="ESCP AI Champions - Gallery", layout="wide")
+
 from PIL import Image
 from streamlit_carousel import carousel
 import db_manager as db
 import math
 from Accueil import pseudo_dialog
-
-st.set_page_config(page_title="ESCP AI Champions - Gallery", layout="wide")
 
 db.initialize_firebase()
 

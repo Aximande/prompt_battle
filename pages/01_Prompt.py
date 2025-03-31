@@ -1,18 +1,23 @@
 import streamlit as st
+
+# Cette ligne doit être la première commande Streamlit
+st.set_page_config(page_title="ESCP AI Champions - Prompt", layout="wide")
+
+# Ensuite, importez les autres modules
 from PIL import Image
 from utils.images_generator import generate_image_openai
 from Accueil import pseudo_dialog
 
 import db_manager as db
 
+# Activez le mode DEBUG si nécessaire
+from utils.images_generator import DEBUG
+# DEBUG = True  # Décommentez cette ligne pour activer le débogage
+
 # st.image(
 #     Image.open("static/Gaumont_logo.svg.png"),
 #     width=400,
 # )
-
-st.set_page_config(page_title="ESCP AI Champions - Prompt", layout="wide")
-
-db.initialize_firebase()
 
 st.sidebar.image(
     Image.open("static/ESCP_LOGO_CMJN.png"),
