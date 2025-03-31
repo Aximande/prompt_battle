@@ -7,7 +7,7 @@ from PIL import Image
 from streamlit_carousel import carousel
 import db_manager as db
 import math
-from Accueil import pseudo_dialog
+from utils.session_utils import pseudo_dialog  # Importer depuis le nouveau module
 
 db.initialize_firebase()
 

@@ -6,7 +6,7 @@ st.set_page_config(page_title="ESCP AI Champions - Prompt", layout="wide")
 # Ensuite, importez les autres modules
 from PIL import Image
 from utils.images_generator import generate_image_openai
-from Accueil import pseudo_dialog
+from utils.session_utils import pseudo_dialog  # Importer depuis le nouveau module
 
 import db_manager as db
 

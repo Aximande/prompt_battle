@@ -6,20 +6,7 @@ st.set_page_config(page_title="ESCP AI Champions - Battle of Prompt", layout="wi
 from PIL import Image
 import db_manager as db
 import os
-
-def pseudo_dialog():
-    if "pseudo_submitted" not in st.session_state:
-        st.session_state["pseudo_submitted"] = False
-    
-    if not st.session_state["pseudo_submitted"]:
-        with st.container():
-            st.subheader("Enter your username")
-            pseudo = st.text_input("What is your username?")
-            if st.button("Submit"):
-                st.session_state["pseudo"] = pseudo
-                st.session_state["pseudo_submitted"] = True
-                st.rerun()
-
+from utils.session_utils import pseudo_dialog  # Importer depuis le nouveau module
 
 db.initialize_firebase()
 
