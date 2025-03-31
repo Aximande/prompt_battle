@@ -41,6 +41,7 @@ def get_openai_client():
     try:
         if DEBUG:
             st.write("Initializing OpenAI client")
+        # Créer le client avec seulement l'argument api_key
         client = OpenAI(api_key=api_key)
         if DEBUG:
             st.write("OpenAI client initialized successfully")
@@ -69,9 +70,10 @@ def generate_image_openai(prompt, style="vivid", quality="standard", size="1024x
         # Obtenir la clé API
         api_key = None
         try:
-            api_key = st.secrets.get("OPENAI_API_KEY")
-        except:
-            pass
+            if "OPENAI_API_KEY" in st.secrets:
+                api_key = st.secrets["OPENAI_API_KEY"]
+        except Exception as e:
+            st.error(f"Error accessing secrets: {e}")
         
         if not api_key:
             api_key = os.environ.get("OPENAI_API_KEY")
@@ -80,7 +82,7 @@ def generate_image_openai(prompt, style="vivid", quality="standard", size="1024x
             st.error("OpenAI API key not found")
             return None
         
-        # Initialiser le client directement ici
+        # Initialiser le client directement ici avec seulement l'argument api_key
         client = OpenAI(api_key=api_key)
         
         response = client.images.generate(
