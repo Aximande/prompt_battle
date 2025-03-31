@@ -5,6 +5,7 @@ import seaborn as sns
 import db_manager as db
 from PIL import Image
 from streamlit_carousel import carousel
+from utils.certificate_generator import create_winner_certificate
 
 st.set_page_config(page_title="ESCP AI Champions - Results", layout="wide")
 
@@ -21,7 +22,7 @@ else:
     ref_url = db.get_img_ref_url(session_name)
     if ref_url:
         st.subheader("Reference Image")
-        st.image(ref_url, width=400, use_container_width=False)
+        st.image(ref_url, width=400)
     
     # Get all images for this session
     images = db.get_all_images_for_session(session_name)
@@ -50,7 +51,7 @@ else:
                 
                 col1, col2 = st.columns([1, 1])
                 with col1:
-                    st.image(winner["img"], use_container_width=True)
+                    st.image(winner["img"])
                 with col2:
                     st.write(f"**Author:** {winner['title']}")
                     st.write(f"**Votes:** {winner['votes']}")
@@ -58,6 +59,30 @@ else:
                     
                     # Add some congratulatory text
                     st.success(f"Congratulations to {winner['title']} for winning this prompt battle!")
+                
+                # Add certificate generation
+                st.subheader("Winner Certificate")
+                
+                # Create certificate
+                certificate_bytes = create_winner_certificate(
+                    winner_image_url=winner["img"],
+                    winner_name=winner["title"],
+                    prompt=winner["text"],
+                    votes=winner["votes"],
+                    session_name=session_name
+                )
+                
+                if certificate_bytes:
+                    # Display certificate
+                    st.image(certificate_bytes, caption="Winner Certificate")
+                    
+                    # Add download button
+                    st.download_button(
+                        label="Download Certificate",
+                        data=certificate_bytes,
+                        file_name=f"ESCP_AI_Champions_Certificate_{winner['title']}.png",
+                        mime="image/png"
+                    )
             
             # Display leaderboard
             st.subheader("Leaderboard")
@@ -75,10 +100,7 @@ else:
             leaderboard_df = pd.DataFrame(leaderboard_data).sort_values("Votes", ascending=False)
             
             # Display dataframe
-            st.dataframe(
-                leaderboard_df,
-                use_container_width=True
-            )
+            st.dataframe(leaderboard_df)
             
             # Create a bar chart of votes
             if len(leaderboard_data) > 0:
