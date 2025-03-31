@@ -43,8 +43,12 @@ if st.button("Reload"):
 if st.session_state["selected_session_db"] != "":
     session_name = st.session_state["selected_session_db"]
     url = db.get_img_ref_url(session_name)
-    st.header(f"Reference Image: {session_name}")
-    st.image(url)
+    
+    if url:
+        st.header(f"Reference Image: {session_name}")
+        st.image(url)
+    else:
+        st.warning(f"No reference image found for session: {session_name}")
 
     prompt = st.text_area("Enter your prompt", value=st.session_state["prompt"])
     

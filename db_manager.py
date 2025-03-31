@@ -79,16 +79,32 @@ def select_session(session_name):
 
 def get_selected_session():
     db = firestore.client()
-    return (
-        db.collection("admin").document("lavaleexx").get().to_dict()["selected_session"]
-    )
+    try:
+        doc = db.collection("admin").document("lavaleexx").get()
+        if doc.exists:
+            doc_dict = doc.to_dict()
+            if doc_dict and "selected_session" in doc_dict:
+                return doc_dict["selected_session"]
+    except Exception as e:
+        st.error(f"Error getting selected session: {e}")
+    return ""
 
 
 def get_img_ref_url(session_name):
     db = firestore.client()
-    return (
-        db.collection("sessions").document(session_name).get().to_dict()["img_ref_url"]
-    )
+    if not session_name:
+        return None
+        
+    doc = db.collection("sessions").document(session_name).get()
+    
+    if not doc.exists:
+        return None
+        
+    doc_dict = doc.to_dict()
+    if not doc_dict or "img_ref_url" not in doc_dict:
+        return None
+        
+    return doc_dict["img_ref_url"]
 
 
 def _delete_collection(coll_ref, batch_size):

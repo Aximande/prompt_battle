@@ -25,81 +25,103 @@ if st.sidebar.button("Reload"):
 
 session_name = db.get_selected_session()
 st.session_state["selected_session"] = session_name
+
 if session_name != "":
-    items = db.get_all_images_for_session(session_name)
+    try:
+        items = db.get_all_images_for_session(session_name)
+        
+        if not items:
+            st.info(f"No images found for session: {session_name}")
+        else:
+            # Add filters to the gallery
+            style_filter = st.sidebar.multiselect(
+                "Filter by style",
+                options=["vivid", "natural", "all"],
+                default=["all"]
+            )
 
-    # Add filters to the gallery
-    style_filter = st.sidebar.multiselect(
-        "Filter by style",
-        options=["vivid", "natural", "all"],
-        default=["all"]
-    )
+            format_filter = st.sidebar.multiselect(
+                "Filter by format",
+                options=["1024x1024", "1792x1024", "1024x1792", "all"],
+                default=["all"]
+            )
 
-    format_filter = st.sidebar.multiselect(
-        "Filter by format",
-        options=["1024x1024", "1792x1024", "1024x1792", "all"],
-        default=["all"]
-    )
+            # Filter items based on selections
+            filtered_items = items
+            if "all" not in style_filter and style_filter:
+                filtered_items = [item for item in filtered_items if item.get("style") in style_filter]
+            if "all" not in format_filter and format_filter:
+                filtered_items = [item for item in filtered_items if item.get("size") in format_filter]
 
-    # Filter items based on selections
-    filtered_items = items
-    if "all" not in style_filter and style_filter:
-        filtered_items = [item for item in filtered_items if item.get("style") in style_filter]
-    if "all" not in format_filter and format_filter:
-        filtered_items = [item for item in filtered_items if item.get("size") in format_filter]
+            if st.sidebar.toggle("Carousel"):
+                col_ref, col_car = st.columns([2, 5])
+                with col_ref:
+                    url = db.get_img_ref_url(session_name)
+                    st.image(url)
+                with col_car:
+                    # Ensure items are in the correct format
+                    carousel_items = []
+                    for item in filtered_items:
+                        # Make sure each item has the correct format for the carousel
+                        carousel_item = {
+                            "title": item.get("title", ""),
+                            "text": item.get("prompt", ""),
+                            "img": item.get("img", "")
+                        }
+                        carousel_items.append(carousel_item)
+                    
+                    # Display carousel only if there are items
+                    if carousel_items:
+                        try:
+                            st.write("Element structure:")
+                            st.write(filtered_items[0] if filtered_items else "No elements")  # Display the first element to see its structure
+                            carousel(items=carousel_items, width=0.9, container_height=900, pause="hover")
+                        except Exception as e:
+                            st.error(f"Error displaying carousel: {e}")
+                            # Display images in grid mode as an alternative
+                            for item in carousel_items:
+                                st.image(item["img"])
+                                st.write(item["title"])
+                    else:
+                        st.warning("No images to display in the carousel.")
+            else:
+                elem_count = len(filtered_items)
+                col_count = 4  # math.ceil(elem_count / 4)
+                cols = [0] * col_count
+                cols[0], cols[1], cols[2], cols[3] = st.columns(col_count)
 
-    if st.sidebar.toggle("Carousel"):
-        col_ref, col_car = st.columns([2, 5])
-        with col_ref:
-            url = db.get_img_ref_url(session_name)
-            st.image(url)
-        with col_car:
-            # Ensure items are in the correct format
-            carousel_items = []
-            for item in filtered_items:
-                # Make sure each item has the correct format for the carousel
-                carousel_item = {
-                    "title": item.get("title", ""),
-                    "text": item.get("prompt", ""),
-                    "img": item.get("img", "")
-                }
-                carousel_items.append(carousel_item)
-            
-            # Display carousel only if there are items
-            if carousel_items:
-                try:
-                    st.write("Element structure:")
-                    st.write(filtered_items[0] if filtered_items else "No elements")  # Display the first element to see its structure
-                    carousel(items=carousel_items, width=0.9, container_height=900, pause="hover")
-                except Exception as e:
-                    st.error(f"Error displaying carousel: {e}")
-                    # Display images in grid mode as an alternative
-                    for item in carousel_items:
+                for i, item in enumerate(filtered_items):
+                    with cols[i % col_count]:
                         st.image(item["img"])
                         st.write(item["title"])
-            else:
-                st.warning("No images to display in the carousel.")
-    else:
-        elem_count = len(filtered_items)
-        col_count = 4  # math.ceil(elem_count / 4)
-        cols = [0] * col_count
-        cols[0], cols[1], cols[2], cols[3] = st.columns(col_count)
-
-        for i, item in enumerate(filtered_items):
-            with cols[i % col_count]:
-                st.image(item["img"])
-                st.write(item["title"])
+    except Exception as e:
+        st.error(f"Error loading gallery: {e}")
+else:
+    st.info("Please select a session to view the gallery.")
 
 if "pseudo" in st.session_state and st.session_state["pseudo"] == "alex_lav":
     names = [""] + db.get_all_session_names()
+    
+    # Check if the selected_session exists in names
+    if "selected_session" in st.session_state and st.session_state["selected_session"] not in names:
+        st.session_state["selected_session"] = ""  # Reset to empty if not found
+    
+    # Find the correct index, defaulting to 0 if not found
+    default_index = 0
+    if "selected_session" in st.session_state:
+        try:
+            default_index = names.index(st.session_state["selected_session"])
+        except ValueError:
+            default_index = 0
+    
     selected_session = st.sidebar.selectbox(
         "Available sessions",
         names,
-        index=names.index(st.session_state["selected_session"]),
+        index=default_index,
     )
+    
     if selected_session != st.session_state["selected_session"]:
         st.session_state["selected_session"] = selected_session
-
         db.select_session(selected_session)
         st.rerun()
 
