@@ -1,6 +1,9 @@
 import firebase_admin
 from firebase_admin import credentials, initialize_app, storage, db, firestore, auth
 import streamlit as st
+import os
+import base64
+import json
 
 import threading
 
@@ -10,15 +13,21 @@ callback_done = threading.Event()
 @st.cache_resource
 def initialize_firebase():
     if not firebase_admin._apps:
-        cred = credentials.Certificate(
-            "./auth_firebase/prompt-battle-9b72d-firebase-adminsdk-lhuc9-cc4c55a33e.json"
-        )
-        initialize_app(
-            cred,
-            {
-                "storageBucket": "prompt-battle-14a49.appspot.com",
-            },
-        )
+        # Vérifier si les informations Firebase sont dans les secrets en base64
+        if "FIREBASE_CREDENTIALS_BASE64" in st.secrets:
+            # Décoder les informations base64 en JSON
+            firebase_json = base64.b64decode(st.secrets["FIREBASE_CREDENTIALS_BASE64"]).decode('utf-8')
+            firebase_config = json.loads(firebase_json)
+            cred = credentials.Certificate(firebase_config)
+            firebase_admin.initialize_app(cred)
+        else:
+            # Fallback au fichier local pour le développement
+            json_path = "auth_firebase/prompt-battle-9b72d-firebase-adminsdk-lhuc9-cc4c55a33e.json"
+            if os.path.exists(json_path):
+                cred = credentials.Certificate(json_path)
+                firebase_admin.initialize_app(cred)
+            else:
+                st.error("Firebase credentials not found")
 
 
 def add_image(session_name, username, img_url, prompt):
