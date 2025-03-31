@@ -21,7 +21,7 @@ else:
     ref_url = db.get_img_ref_url(session_name)
     if ref_url:
         st.subheader("Reference Image")
-        st.image(ref_url, width=400)
+        st.image(ref_url, width=400, use_container_width=False)
     
     # Get all images for this session
     images = db.get_all_images_for_session(session_name)
@@ -50,7 +50,7 @@ else:
                 
                 col1, col2 = st.columns([1, 1])
                 with col1:
-                    st.image(winner["img"])
+                    st.image(winner["img"], use_container_width=True)
                 with col2:
                     st.write(f"**Author:** {winner['title']}")
                     st.write(f"**Votes:** {winner['votes']}")

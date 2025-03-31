@@ -156,7 +156,7 @@ else:
         ref_url = db.get_img_ref_url(session_name)
         if ref_url:
             st.subheader("Reference Image")
-            st.image(ref_url, use_column_width=True)
+            st.image(ref_url, use_container_width=True)
             
             # Add session information below the reference image
             st.write("### Challenge")
@@ -227,7 +227,7 @@ else:
                             st.markdown(f'<div class="{card_class}">', unsafe_allow_html=True)
                             
                             # Display image
-                            st.image(img_data["img"], use_column_width=True)
+                            st.image(img_data["img"], use_container_width=True)
                             
                             # Show author and votes
                             author = img_data["title"]

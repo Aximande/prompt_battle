@@ -152,6 +152,6 @@ if st.session_state["selected_session_db"] != "":
     # Display current image (last generated)
     if "img_url" in st.session_state and st.session_state["img_url"] is not None and st.session_state["img_url"] != "":
         st.header(f"Your latest image: {st.session_state['pseudo']}")
-        st.image(st.session_state["img_url"])
+        st.image(st.session_state["img_url"], use_container_width=True)
 else:
     st.warning("No session selected. Please choose a session on the home page.")
