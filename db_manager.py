@@ -13,21 +13,27 @@ callback_done = threading.Event()
 @st.cache_resource
 def initialize_firebase():
     if not firebase_admin._apps:
-        # Vérifier si les informations Firebase sont dans les secrets en base64
-        if "FIREBASE_CREDENTIALS_BASE64" in st.secrets:
-            # Décoder les informations base64 en JSON
-            firebase_json = base64.b64decode(st.secrets["FIREBASE_CREDENTIALS_BASE64"]).decode('utf-8')
-            firebase_config = json.loads(firebase_json)
-            cred = credentials.Certificate(firebase_config)
-            firebase_admin.initialize_app(cred)
+        # Vérifier si nous sommes sur Streamlit Cloud (en vérifiant une variable d'environnement)
+        if os.environ.get('STREAMLIT_SHARING', '') == 'true':
+            # Sur Streamlit Share, utiliser les secrets
+            try:
+                if "FIREBASE_CREDENTIALS_BASE64" in st.secrets:
+                    firebase_json = base64.b64decode(st.secrets["FIREBASE_CREDENTIALS_BASE64"]).decode('utf-8')
+                    firebase_config = json.loads(firebase_json)
+                    cred = credentials.Certificate(firebase_config)
+                    firebase_admin.initialize_app(cred)
+                else:
+                    st.error("Firebase credentials not found in secrets")
+            except Exception as e:
+                st.error(f"Error initializing Firebase: {e}")
         else:
-            # Fallback au fichier local pour le développement
+            # En local, utiliser le fichier JSON
             json_path = "auth_firebase/prompt-battle-9b72d-firebase-adminsdk-lhuc9-cc4c55a33e.json"
             if os.path.exists(json_path):
                 cred = credentials.Certificate(json_path)
                 firebase_admin.initialize_app(cred)
             else:
-                st.error("Firebase credentials not found")
+                st.error(f"Firebase credentials file not found at {json_path}")
 
 
 def add_image(session_name, username, img_url, prompt):

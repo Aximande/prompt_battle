@@ -6,9 +6,26 @@ import streamlit as st
 import urllib.request
 import json
 
-# Initialize OpenAI client with API key from Streamlit secrets
-client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
-
+# Initialize OpenAI client with API key from Streamlit secrets or environment variable
+def get_openai_client():
+    api_key = None
+    
+    # Essayer d'obtenir la clé depuis les secrets Streamlit
+    try:
+        api_key = st.secrets.get("OPENAI_API_KEY")
+    except:
+        pass
+    
+    # Si pas trouvé, essayer depuis les variables d'environnement
+    if not api_key:
+        api_key = os.environ.get("OPENAI_API_KEY")
+    
+    # Si toujours pas trouvé, afficher un message d'erreur
+    if not api_key:
+        st.error("OpenAI API key not found. Please add it to your secrets.toml file or set the OPENAI_API_KEY environment variable.")
+        return None
+    
+    return OpenAI(api_key=api_key)
 
 def generate_image_openai(prompt, style="vivid", quality="standard", size="1024x1024"):
     """
@@ -23,6 +40,10 @@ def generate_image_openai(prompt, style="vivid", quality="standard", size="1024x
     Returns:
         str: URL of the generated image
     """
+    client = get_openai_client()
+    if not client:
+        return None
+        
     try:
         response = client.images.generate(
             model="dall-e-3",
