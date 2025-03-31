@@ -223,20 +223,17 @@ def save_img(img_url, file_path):
             st.error(f"Error saving image: {e}")
 
 def check_firebase_initialization():
-    """Checks if Firebase is properly initialized with storage bucket"""
+    """
+    Check if Firebase is properly initialized
+    """
     try:
-        if not firebase_admin._apps:
-            st.error("Firebase is not initialized!")
-            return False
-            
-        # Check if bucket is accessible
-        try:
-            bucket = storage.bucket(name="prompt-battle-9b72d.appspot.com")
-            st.success(f"Firebase Storage successfully initialized. Bucket: {bucket.name}")
-            return True
-        except Exception as e:
-            st.error(f"Error accessing Firebase bucket: {e}")
-            return False
+        # Get the bucket
+        bucket = storage.bucket()
+        
+        # Store the bucket name in session state for debug purposes
+        st.session_state["firebase_bucket"] = bucket.name
+        
+        return True
     except Exception as e:
-        st.error(f"Error checking Firebase: {e}")
+        st.error(f"Error initializing Firebase Storage: {e}")
         return False

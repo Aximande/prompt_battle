@@ -45,6 +45,13 @@ if st.sidebar.button("Clear History"):
 if st.sidebar.button("Reload"):
     st.rerun()
 
+# Debug information (only for admin)
+if st.session_state["pseudo"] == "alex_lav":
+    debug_mode = st.sidebar.checkbox("Debug Mode")
+    
+    if debug_mode and "firebase_bucket" in st.session_state:
+        st.sidebar.success(f"Firebase Storage initialized. Bucket: {st.session_state['firebase_bucket']}")
+
 # Main content
 if st.session_state["selected_session_db"] != "":
     session_name = st.session_state["selected_session_db"]
